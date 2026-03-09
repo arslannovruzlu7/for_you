@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Gizli Mesaj</title>
+    <title>Bayram Təbriki</title>
     <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&display=swap" rel="stylesheet">
     
     <style>
@@ -20,19 +20,40 @@
             height: 100dvh; 
             background-color: #fdf5e6;
             margin: 0;
-            overflow: hidden; /* Heç nə ekrandan kənara daşmasın */
+            overflow: hidden; 
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            position: relative; /* Kartların ekranda sərbəst yerləşməsi üçün əsasdır */
+            position: relative; 
         }
 
-        h2 {
-            color: #d8435c;
+        /* Başlıq konteyneri (Hər iki yazını bir yerdə tutur) */
+        #basliq-qrupu {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
             margin-bottom: 20px;
-            font-size: clamp(20px, 5vw, 26px); 
-            text-align: center;
-            animation: pilt-pilt 1.5s infinite alternate;
-            transition: opacity 0.3s ease;
+            transition: opacity 0.3s ease; /* Yox olma animasiyası */
             z-index: 10;
+        }
+
+        /* Ümumi animasiya (pilt-pilt) hər iki yazıya tətbiq olunur */
+        .animasiyali-yazi {
+            color: #d8435c;
+            text-align: center;
+            margin: 0;
+            animation: pilt-pilt 1.5s infinite alternate;
+        }
+
+        /* "Bayramın Mübarək" yazısının üslubu */
+        h1#bayram-tebrik {
+            font-size: clamp(28px, 7vw, 36px); /* Daha böyük və diqqətçəkən */
+            margin-bottom: 5px; /* Altdakı yazı ilə ara */
+        }
+
+        /* "Zərfi Açmaq Üçün Toxunun" yazısının üslubu */
+        h2#basliq-alt {
+            font-size: clamp(18px, 4vw, 22px); 
+            font-weight: normal; /* Daha incə */
+            opacity: 0.9; /* Cüzi şəffaflıq */
         }
 
         @keyframes pilt-pilt {
@@ -40,7 +61,7 @@
             to { opacity: 1; transform: scale(1.02); }
         }
 
-        /* Zərfin ölçüsü */
+        /* Zərf konteyneri */
         .zarf-container {
             position: relative;
             width: 100%;
@@ -65,7 +86,6 @@
 
         /* ================= KARTLARIN DİZAYNI ================= */
 
-        /* Kartların yuxarı-aşağı uçma animasiyası */
         @keyframes yeltenme {
             0% { transform: translateY(0px); }
             50% { transform: translateY(-15px); }
@@ -74,29 +94,27 @@
 
         .kart-wrapper {
             position: absolute;
-            opacity: 0; /* Başlanğıcda gizlidir */
+            opacity: 0; 
             display: none; 
-            transition: opacity 1s ease; /* Ekrana yumşaq gəlməsi üçün */
+            transition: opacity 1s ease; 
             z-index: 20; 
         }
 
-        /* Kartların ekranın müxtəlif yerlərində yerləşdirilməsi */
         #kart1-wrap { top: 12%; left: 8%; animation: yeltenme 3s ease-in-out infinite; }
         #kart2-wrap { top: 18%; right: 8%; animation: yeltenme 3.5s ease-in-out infinite; }
         #kart3-wrap { bottom: 12%; left: 50%; transform: translateX(-50%); animation: yeltenme 4s ease-in-out infinite; }
 
-        /* Telefonlarda zərfin üstünə çıxmaması üçün xüsusi tənzimləmə */
         @media (max-width: 600px) {
-            .zarf-container { max-width: 280px; } /* Zərf biraz kiçilir ki, kartlara yer qalsın */
+            .zarf-container { max-width: 280px; } 
             #kart1-wrap { top: 5%; left: 2%; }
             #kart2-wrap { top: 10%; right: 2%; }
             #kart3-wrap { bottom: 8%; left: 50%; }
         }
 
         .kart {
-            width: 140px;
-            height: 170px;
-            perspective: 1000px; /* 3D effektin dərinliyi */
+            width: 140px; 
+            height: 170px; 
+            perspective: 1000px; 
             cursor: pointer;
         }
 
@@ -104,11 +122,10 @@
             width: 100%;
             height: 100%;
             position: relative;
-            transition: transform 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275); /* Fırlanmanın sıçrayışlı və şirin olması üçün */
+            transition: transform 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275); 
             transform-style: preserve-3d;
         }
 
-        /* Toxunanda çevrilməsi üçün sinif */
         .kart.cevril .kart-inner {
             transform: rotateY(180deg);
         }
@@ -117,18 +134,18 @@
             position: absolute;
             width: 100%;
             height: 100%;
-            backface-visibility: hidden; /* Arxası dönəndə güzgü effekti olmasın deyə */
+            backface-visibility: hidden; 
             display: flex;
             justify-content: center;
             align-items: center;
             border-radius: 15px;
             box-shadow: 0 5px 15px rgba(216, 67, 92, 0.2);
-            padding: 15px;
+            padding: 10px; 
             text-align: center;
         }
 
         .kart-on {
-            background-color: #ff8fa3; /* Şirin çəhrayı */
+            background-color: #ff8fa3; 
             color: white;
             font-weight: bold;
             font-size: 20px;
@@ -138,17 +155,21 @@
         .kart-arxa {
             background-color: #fff0f3;
             color: #d8435c;
-            transform: rotateY(180deg); /* Başlanğıcda arxaya baxır */
-            font-family: 'Dancing Script', cursive; /* Romantik şrift */
-            font-size: 22px;
-            line-height: 1.3;
+            transform: rotateY(180deg); 
+            font-family: 'Dancing Script', cursive; 
+            font-size: 19px; 
+            line-height: 1.2;
             border: 2px solid #ffb3c1;
+            word-wrap: break-word; 
         }
     </style>
 </head>
 <body>
 
-    <h2 id="basliq">Zərfi Açmaq Üçün Toxunun</h2>
+    <div id="basliq-qrupu">
+        <h1 id="bayram-tebrik" class="animasiyali-yazi">Bayramın Mübarək</h1>
+        <h2 id="basliq-alt" class="animasiyali-yazi">Zərfi Açmaq Üçün Toxunun</h2>
+    </div>
     
     <div class="zarf-container" id="zarfQutusu">
         <img id="zarf_bagli" src="zarf_bagli.gif" alt="Bağlı Zərf">
@@ -184,6 +205,7 @@
     </div>
 
     <script>
+        // Səssiz preloading
         const preloadAnimasiya = new Image();
         preloadAnimasiya.src = 'zarf.gif';
         
@@ -194,7 +216,7 @@
         const zarfAnimasiya = document.getElementById('zarf_animasiya');
         const zarfAciq = document.getElementById('zarf_aciq');
         const zarfQutusu = document.getElementById('zarfQutusu');
-        const basliq = document.getElementById('basliq');
+        const basliqQrupu = document.getElementById('basliq-qrupu'); // Yeni konteyner seçildi
         const kartWrapperlar = document.querySelectorAll('.kart-wrapper');
         const butunKartlar = document.querySelectorAll('.kart');
 
@@ -204,8 +226,9 @@
             if (acilib) return;
             acilib = true;
 
-            basliq.style.opacity = '0';
-            setTimeout(() => { basliq.style.display = 'none'; }, 300);
+            // Bütün başlıq qrupunu yox edirik
+            basliqQrupu.style.opacity = '0';
+            setTimeout(() => { basliqQrupu.style.display = 'none'; }, 300);
 
             zarfBagli.style.opacity = '0';
 
@@ -213,7 +236,7 @@
             zarfAnimasiya.style.opacity = '1'; 
             zarfAnimasiya.style.zIndex = '4'; 
 
-            // Zərf açıldıqdan sonra (1.8 saniyə)
+            // Zərf açıldıqdan sonra kartları göstər
             setTimeout(() => {
                 zarfAciq.src = 'zarf_aciq.gif';
                 zarfAciq.style.opacity = '1';
@@ -221,10 +244,8 @@
                 zarfAnimasiya.style.opacity = '0'; 
                 zarfQutusu.style.cursor = 'default';
 
-                // Kartları sırayla ekranda göstəririk
                 kartWrapperlar.forEach(kartWrap => {
                     kartWrap.style.display = 'block';
-                    // Display block tam işə düşsün deyə kiçik bir millisaniyə gecikmə
                     setTimeout(() => {
                         kartWrap.style.opacity = '1';
                     }, 50);
@@ -233,17 +254,12 @@
             }, 1800); 
         });
 
-        // Hər karta klikləyəndə 3D çevrilmə funksiyası
+        // Kart fırlatma funksiyası
         butunKartlar.forEach(kart => {
             kart.addEventListener('click', function() {
-                // "cevril" sinifini əlavə edib-çıxararaq kartı fırladırıq
                 this.classList.toggle('cevril');
             });
         });
     </script>
 </body>
 </html>
-
-
-
-
