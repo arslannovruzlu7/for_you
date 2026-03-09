@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="az">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gizli Mesaj</title>
+    <style>
+        /* Səhifənin dizaynı və zərfin tənzimlənməsi */
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-color: #fdf5e6; /* Arxa fon rəngi (istəyə görə dəyişə bilərsiniz) */
+            margin: 0;
+            overflow: hidden;
+        }
+
+        .zarf-container {
+            position: relative;
+            width: 300px; /* Zərfin ölçüsü */
+            height: 300px;
+            cursor: pointer; /* Üzərinə gələndə əl işarəsi çıxması üçün */
+        }
+
+        /* Bütün gifləri üst-üstə və eyni ölçüdə saxlayırıq ki, qırılma olmasın */
+        .zarf-container img {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+            display: none; /* Başlanğıcda hamısını gizlədirik */
+        }
+
+        /* Sadəcə bağlı zərf başlanğıcda görünür */
+        #zarf_bagli {
+            display: block;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="zarf-container" id="zarfQutusu">
+        <img id="zarf_bagli" src="zarf_bagli.gif" alt="Bağlı Zərf">
+        <img id="zarf_animasiya" src="" alt="Zərf Açılır">
+        <img id="zarf_aciq" src="zarf_aciq.gif" alt="Açıq Zərf">
+    </div>
+
+    <script>
+        // 1. Gecikmə və donma olmaması üçün animasiyanı arxa planda əvvəlcədən yükləyirik
+        const oncedenYukle = new Image();
+        oncedenYukle.src = 'zarf.gif'; 
+
+        const zarfBagli = document.getElementById('zarf_bagli');
+        const zarfAnimasiya = document.getElementById('zarf_animasiya');
+        const zarfAciq = document.getElementById('zarf_aciq');
+        const zarfQutusu = document.getElementById('zarfQutusu');
+
+        let acilib = false;
+
+        // 2. Zərfə kliklədikdə baş verəcək hadisələr
+        zarfQutusu.addEventListener('click', () => {
+            if (acilib) return; // İkinci dəfə klikləməyin qarşısını almaq üçün
+            acilib = true;
+
+            // Bağlı zərfi gizlət
+            zarfBagli.style.display = 'none';
+
+            // Animasiyalı zərfi göstər və işə sal
+            // Src-ni klikləyən an veririk ki, gif ortadan yox, lap başdan başlasın
+            zarfAnimasiya.src = 'zarf.gif'; 
+            zarfAnimasiya.style.display = 'block';
+
+            // 3. Animasiya bitdikdən sonra açıq zərfi ekranda saxlamaq
+            // DİQQƏT: 1800 rəqəmi millisaniyədir (yəni 1.8 saniyə). 
+            // "zarf.gif"-in uzunluğuna görə bu rəqəmi (məs: 2000, 2500) dəyişib tam ideal anı tuta bilərsiniz.
+            setTimeout(() => {
+                zarfAnimasiya.style.display = 'none'; // Animasiyanı gizlət
+                zarfAciq.style.display = 'block';     // Açıq halını ekranda saxla
+                zarfQutusu.style.cursor = 'default';  // Daha kliklənməsin deyə əl işarəsini yığışdır
+            }, 1800); 
+        });
+    </script>
+
+</body>
+</html>
