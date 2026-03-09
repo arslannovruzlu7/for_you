@@ -5,43 +5,48 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Gizli Mesaj</title>
     <style>
+        * {
+            box-sizing: border-box;
+        }
+
         body {
             display: flex;
             flex-direction: column;
             justify-content: center;
             align-items: center;
-            height: 100vh;
+            height: 100vh; /* Köhnə brauzerlər üçün ehtiyat */
+            height: 100dvh; /* Mobil cihazlar üçün dinamik hündürlük */
             background-color: #fdf5e6;
             margin: 0;
+            padding: 20px; /* Kiçik ekranlarda kənarlara yapışmaması üçün boşluq */
             overflow: hidden;
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
         }
 
-        /* "Toxunun" yazısının dizaynı */
+        /* Yazının ekran ölçüsünə görə avtomatik kiçilib-böyüməsi (clamp) */
         h2 {
             color: #d8435c;
             margin-bottom: 20px;
-            font-size: 26px;
+            font-size: clamp(20px, 5vw, 26px); 
             text-align: center;
             animation: pilt-pilt 1.5s infinite alternate;
-            transition: opacity 0.5s ease;
+            transition: opacity 0.3s ease;
         }
 
-        /* Yüngül döyünmə animasiyası */
         @keyframes pilt-pilt {
             from { opacity: 0.7; transform: scale(0.98); }
             to { opacity: 1; transform: scale(1.02); }
         }
 
-        /* Zərfin ölçüsü və qutusu */
+        /* Zərfin responsiv (cihaza uyğun) ölçüləndirilməsi */
         .zarf-container {
             position: relative;
-            width: 450px; 
-            height: 450px;
+            width: 100%; /* Ekranın enini tam alır */
+            max-width: 450px; /* Amma 450px-dən böyük olmur (kompüterlər üçün) */
+            aspect-ratio: 1 / 1; /* Kvadrat formasını qoruyur ki, giflər əyilməsin */
             cursor: pointer;
         }
 
-        /* Şəkillərin üst-üstə tam oturması üçün */
         .zarf-container img {
             position: absolute;
             top: 0;
@@ -49,7 +54,7 @@
             width: 100%;
             height: 100%;
             object-fit: contain;
-            transition: opacity 0.2s ease; /* Keçidlərin daha yumşaq olması üçün */
+            transition: opacity 0.1s ease;
         }
 
         /* Görünmə sırası və şəffaflıq */
@@ -69,14 +74,13 @@
     </div>
 
     <script>
-        // 1. Digər gifləri arxa planda səssizcə yükləyirik ki, donma olmasın
+        // Arxa planda səssiz yükləmə
         const preloadAnimasiya = new Image();
         preloadAnimasiya.src = 'zarf.gif';
         
         const preloadAciq = new Image();
         preloadAciq.src = 'zarf_aciq.gif';
 
-        // 2. Elementləri seçirik
         const zarfBagli = document.getElementById('zarf_bagli');
         const zarfAnimasiya = document.getElementById('zarf_animasiya');
         const zarfAciq = document.getElementById('zarf_aciq');
@@ -89,16 +93,21 @@
             if (acilib) return;
             acilib = true;
 
-            // Yazını və bağlı zərfi yumşaq şəkildə yox edirik
+            // Yazını yox edirik
             basliq.style.opacity = '0';
+            setTimeout(() => {
+                basliq.style.display = 'none'; 
+            }, 300);
+
+            // Bağlı zərfi yox edirik
             zarfBagli.style.opacity = '0';
 
-            // Animasiya gifini işə salırıq (artıq arxa planda yükləndiyi üçün dərhal açılacaq)
+            // Animasiyanı işə salırıq
             zarfAnimasiya.src = 'zarf.gif'; 
             zarfAnimasiya.style.opacity = '1'; 
             zarfAnimasiya.style.zIndex = '4'; 
 
-            // Animasiya bitdikdən sonra açıq zərfi göstəririk (1800 ms = 1.8 saniyə)
+            // 1.8 saniyə sonra açıq zərfi göstəririk
             setTimeout(() => {
                 zarfAciq.src = 'zarf_aciq.gif';
                 zarfAciq.style.opacity = '1';
